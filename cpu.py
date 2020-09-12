@@ -168,10 +168,12 @@ class CPU:
             print('started CMP')
             reg_a = int(reg_a,2)
             reg_b = int(reg_b,2)
-            a = int(self.reg[reg_a],2)
-            b = int(self.reg[reg_b],2)
+            print(reg_a)
+            print(reg_b)
+            a = self.reg[reg_a]
+            # b = self.reg[reg_b]
             print(f'a = {a}')
-            print(f'b = {b}')
+            # print(f'b = {b}')
 
 
             if a < b:
