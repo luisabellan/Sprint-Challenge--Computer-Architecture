@@ -34,7 +34,47 @@ class CPU:
         # self.ccr : [0] * 8
         # self.ie = {}
 
+        def trace(self):
 
+            """
+            Handy function to print out the CPU state. You might want to call this
+            from run() if you need help debugging."""
+
+            print(f"TRACE: %02X | %02X %02X %02X |" % (
+                self.pc,
+                self.fl,
+                #self.ie,
+                self.ram_read(self.pc),
+                self.ram_read(self.pc + 1),
+                self.ram_read(self.pc + 2),
+
+            ), end='')
+
+            for i in range(8):
+                print(" %02X" % self.reg[i], end='')
+
+            print()
+
+    def ram_read(self, address):
+        # print(f'address: {address}')
+        print(f'address: {address}')
+
+        self.mar = address
+        self.ir = self.ram[address]
+        # print(self.ir)
+        output = self.ir
+        print(output)
+        return output
+
+    def ram_write(self, value, address):
+        self.mdr = value
+        self.mar = address
+        self.ram[address] = value
+
+    def next_operation(self):
+        instruction = self.ram_read(self.pc)
+        self.pc += int(instruction,2) >> 5
+        
     def load(self, filename):
         """Load a program into memory."""
 
@@ -206,46 +246,7 @@ class CPU:
 
 
 
-    def trace(self):
-        """
-        Handy function to print out the CPU state. You might want to call this
-        from run() if you need help debugging.
-        """
-
-        print(f"TRACE: %02X | %02X %02X %02X |" % (
-            self.pc,
-            self.fl,
-            #self.ie,
-            self.ram_read(self.pc),
-            self.ram_read(self.pc + 1),
-            self.ram_read(self.pc + 2),
-
-        ), end='')
-
-        for i in range(8):
-            print(" %02X" % self.reg[i], end='')
-
-        print()
-
-    def ram_read(self, address):
-        # print(f'address: {address}')
-        print(f'address: {address}')
-
-        self.mar = address
-        self.ir = self.ram[address]
-        # print(self.ir)
-        output = self.ir
-        print(output)
-        return output
-
-    def ram_write(self, value, address):
-        self.mdr = value
-        self.mar = address
-        self.ram[address] = value
-
-    def next_operation(self):
-        instruction = self.ram_read(self.pc)
-        self.pc += int(instruction,2) >> 5
+   
 
     def run(self):
         """Run the CPU."""
@@ -291,8 +292,7 @@ class CPU:
                 # print(f'handled by alu')
 
                 instruction = self.ram_read(self.pc)
-                operand_a = self.ram_read(self.pc+1)
-                operand_b = self.ram_read(self.pc+2)
+                
                 # print(f'instruction: {bin(instruction)}')
                 # print(f'instruction >> 5: {bin(instruction>>5)}')
 
@@ -307,10 +307,9 @@ class CPU:
                     self.alu('ADD', operand_a, operand_b)
                 #print('here')
                 #print(instruction[-4:])
-                if instruction[-4:] == '0010':
+                elif instruction[-4:] == '0010':
 
                     op = 'MUL'
-                    print('here')
                     instruction = self.ram_read(self.pc)
                     operand_a = self.ram_read(self.pc+1)
                     operand_b = self.ram_read(self.pc+2)
@@ -318,7 +317,7 @@ class CPU:
                     #print(f'instruction >> 5: {bin(instruction>>5)}')
                     self.alu('MUL', operand_a, operand_b)
 
-                if instruction[-4:] == '0111':
+                elif instruction[-4:] == '0111':
 
                     op = 'CMP'
                     # print('here')
