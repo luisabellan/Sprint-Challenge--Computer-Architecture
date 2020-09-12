@@ -71,41 +71,56 @@ class CPU:
     def alu(self, op, reg_a = 0, reg_b = 0):
         """ALU operations."""
         print('this is an ALU operation')
-        print(f'reg_a: {reg_a}')
-        print(f'reg_b: {reg_b}')
+        print(f'reg_a: {int(reg_a,2)}')
+        print(f'reg_b: {int(reg_b,2)}')
+        
+        
+
         if op == "ADD":
+            print('started ADD')
+
             a = int(self.reg[int(reg_a,2)],2)
             b = int(self.reg[int(reg_b,2)],2)
             self.reg[int(reg_a,2)] = a + b
+            print('ADD done')
             self.pc += 3
+
 
         elif op == "SUB":
             a = int(self.reg[int(reg_a,2)],2)
             b = int(self.reg[int(reg_b,2)],2)
-            self.reg[int(reg_a,2)] = a - b
+            self.reg[reg_a] = a - b
+            print('SUB done')
             self.pc += 3
 
         elif op == "MUL":
-            # print(int(self.reg[int(reg_a,2)],2), end=' ')
-            # print('*', end=' ')
-            # print(int(self.reg[int(reg_b,2)],2), end=" ")
-            # print('=', end=" ")
-            a = int(self.reg[int(reg_a,2)],2)
-            b = int(self.reg[int(reg_b,2)],2)
-            self.reg[int(reg_a,2)] = a * b
-           
+            reg_a = int(reg_a,2)
+            reg_b = int(reg_b,2)
+            print('MUL started')
+            a = int(self.reg[reg_a],2)
+            b = int(self.reg[reg_b],2)
+            print(f'a = {a}')
+            print(f'b = {b}')
+
+         
+            self.reg[reg_a] = a * b
+            print('MUL done')
             self.pc += 3
 
 
         elif op == "DIV":
+            print('DIV started')
+            
             if self.reg[reg_b] == 0:
                 print("error: cannot divide by zero")
-            a = int(self.reg[int(reg_a,2)],2)
-            b = int(self.reg[int(reg_b,2)],2)
+            a = int(self.reg[reg_a],2)
+            b = int(self.reg[reg_b],2)
             self.reg[int(reg_a,2)] = a // b
             self.pc += 3
+            print('DIV done')
 
         elif op == "CMP":
+            print('started CMP')
             a = int(self.reg[int(reg_a,2)],2)
             b = int(self.reg[int(reg_b,2)],2)
 
@@ -133,24 +148,34 @@ class CPU:
             else:
                 self.fl[-1] = 0
                 self.pc += 3
+            
+            
 
 
 
-
+            print('CMP done')
         else:
             raise Exception("Unsupported ALU operation")
+            
+        
 
 
     def non_alu(self, op, reg_a = 0, reg_b = 0):
-
+        
+        
+        """non-ALU operations."""
         print('this is an non-ALU operation')
-        print(f'reg_a: {reg_a}')
-        print(f'reg_b: {reg_b}')
+        # print(f'reg_a: {reg_a}')
+        # print(f'reg_b: {reg_b}')
+        
+
         if op == "LDI":
-            print('PRN started')
+            print('LDI started')
+            reg_a = int(reg_a,2)
+            reg_b = reg_b
             print(f'reg_a:{reg_a}')
             print(f'reg_b:{reg_b}')
-            self.reg[int(reg_a,2)] = reg_b
+            self.reg[reg_a] = reg_b
 
             # print(self.reg[reg_a])
             self.pc += 3
@@ -158,13 +183,17 @@ class CPU:
 
         elif op == "PRN":
             print('PRN started')
+            reg_a = int(reg_a,2)
+           
 
             # print(type(self.reg[int(reg_a,2)]))
-            if type(self.reg[int(reg_a,2)]) == str:
-                print(int(self.reg[int(reg_a,2)],2))
+            if type(self.reg[reg_a]) == str:
+                print('here')
+                print( int( self.reg[reg_a][2:],2)   )
             else:
-                print(self.reg[int(reg_a,2)])
-                # print(int(self.reg[int(reg_a,2)],2))
+                print(self.reg[reg_a])
+                # print(self.reg[reg_a])
+            
             self.pc += 2
             print('PRN done')
 
@@ -185,7 +214,7 @@ class CPU:
 
         print(f"TRACE: %02X | %02X %02X %02X |" % (
             self.pc,
-            #self.fl,
+            self.fl,
             #self.ie,
             self.ram_read(self.pc),
             self.ram_read(self.pc + 1),
@@ -200,14 +229,14 @@ class CPU:
 
     def ram_read(self, address):
         # print(f'address: {address}')
+        print(f'address: {address}')
 
         self.mar = address
-      
-
         self.ir = self.ram[address]
         # print(self.ir)
-       
-        return self.ir
+        output = self.ir
+        print(output)
+        return output
 
     def ram_write(self, value, address):
         self.mdr = value
@@ -221,7 +250,7 @@ class CPU:
     def run(self):
         """Run the CPU."""
 
-        #self.trace()
+        # self.trace()
 
 
         # print(self.mar)
@@ -258,7 +287,7 @@ class CPU:
 
                 # handled by alu()
 
-                handled_by_alu = True
+                # handled_by_alu = True
                 # print(f'handled by alu')
 
                 instruction = self.ram_read(self.pc)
@@ -309,7 +338,7 @@ class CPU:
                 # not handled by alu()
                 # print(instruction)
                 
-                handled_by_alu = False
+                # handled_by_alu = False
 
 
                 #print(f'not handled by alu')
