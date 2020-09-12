@@ -166,8 +166,12 @@ class CPU:
 
         elif op == "CMP":
             print('started CMP')
+            reg_a = int(reg_a,2)
+            reg_b = int(reg_b,2)
             a = int(self.reg[reg_a],2)
             b = int(self.reg[reg_b],2)
+            print(f'a = {a}')
+            print(f'b = {b}')
 
 
             if a < b:
@@ -242,10 +246,10 @@ class CPU:
             print('PRN done')
 
         elif op == "HLT":
-            # print('HLT started')
+            print('HLT started')
             
             self.pc += 1
-            # print('HLT done')
+            print('HLT done')
 
 
 
@@ -272,8 +276,9 @@ class CPU:
 
         # dont delete this one
         # print(bin(int(self.ram_read(self.pc),2)))
-
-
+        # print('here')
+        # print(bin(int(self.ram_read(self.pc),2)))
+        # print('here')
         while bin(int(self.ram_read(self.pc),2)) != '0b00000001':
             
 
@@ -304,6 +309,7 @@ class CPU:
                 # print(f'instruction >> 5: {bin(instruction>>5)}')
 
                 if self.ram_read(self.pc)[-4:] == '0000':
+                    print('0000')
                     op = 'ADD'
                     # instruction = self.ram_read(self.pc)
                     operand_a = self.ram_read(self.pc+1)
@@ -316,6 +322,7 @@ class CPU:
                 #print(instruction[-4:])
 
                 elif self.ram_read(self.pc)[-4:] == '0010':
+                    print('0010')
                     
                     op = 'MUL'
                     # instruction = self.ram_read(self.pc)
@@ -326,7 +333,7 @@ class CPU:
                     self.alu('MUL', operand_a, operand_b)
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
-                    print('here')
+                    print('0111')
                     
                     op = 'CMP'
                    
@@ -337,6 +344,8 @@ class CPU:
                     #print(f'instruction >> 5: {bin(instruction>>5)}')
                     self.alu('CMP', operand_a, operand_b)
                     # print('here')
+                else:
+                    print('Error')
 
                 # if bin(instruction)[-4:] == '1000':
                 #     op = 'AND'
