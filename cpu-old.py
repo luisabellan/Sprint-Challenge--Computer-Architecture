@@ -331,13 +331,12 @@ class CPU:
                     #print(f'instruction: {bin(instruction)}')
                     #print(f'instruction >> 5: {bin(instruction>>5)}')
                     self.alu('MUL', operand_a, operand_b)
-                
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
                     print('0111')
                     
                     op = 'CMP'
-                    
+                   
                     # instruction = self.ram_read(self.pc)
                     operand_a = self.ram_read(self.pc+1)
                     operand_b = self.ram_read(self.pc+2)
@@ -345,6 +344,7 @@ class CPU:
                     #print(f'instruction >> 5: {bin(instruction>>5)}')
                     self.alu('CMP', operand_a, operand_b)
                     # print('here')
+                
 
                 # if bin(instruction)[-4:] == '1000':
                 #     op = 'AND'
