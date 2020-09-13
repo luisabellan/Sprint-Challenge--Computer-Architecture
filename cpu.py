@@ -30,9 +30,10 @@ class CPU:
         self.mar = self.pc
         self.reg[7] = 0xF4
         self.ram = [0] * 2048 # 256 bytes * 8 bits/byte = 2048bits
-
+        self.running = True
         # self.ccr : [0] * 8
         # self.ie = {}
+
 
         def trace(self):
 
@@ -251,14 +252,16 @@ class CPU:
                 
                 print(self.reg[reg_a])
             
-            self.pc += 1
+            self.pc += 2
             print('PRN done')
 
         elif op == "HLT":
+            print(int(self.ram_read(self.pc),2))
             print('HLT started')
             
             self.pc += 1
             print('HLT done')
+            self.running = False
         
         
         else:
@@ -292,7 +295,7 @@ class CPU:
         # print('here')
         # print(bin(int(self.ram_read(self.pc),2)))
         # print('here')
-        while self.ram_read(self.pc) != '0b1':
+        while self.running:
             
 
             
@@ -334,7 +337,7 @@ class CPU:
                 #print(instruction[-4:])
 
                 elif self.ram_read(self.pc)[-4:] == '0010':
-                    print('0010')
+                    print('10100010')
                     
                     op = 'MUL'
                     # instruction = self.ram_read(self.pc)
@@ -346,7 +349,7 @@ class CPU:
                 
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
-                    print('0111')
+                    print('10100111')
                     
                     op = 'CMP'
                     
@@ -377,6 +380,7 @@ class CPU:
                 # print(bin(int(instruction,2))[-4:])
                 if self.ram_read(self.pc)[-4:] == '0010':
                     # print(bin(int(bin(int(self.ram_read(self.pc),2)),2))[-4:])
+                    print('10000010')
                     op = 'LDI'
                     operand_a = self.ram_read(self.pc+1)
                     operand_b = self.ram_read(self.pc+2)
@@ -389,12 +393,14 @@ class CPU:
                 # print(bin(int(self.ram_read(self.pc),2)))
                 # instruction = bin(int(self.ram_read(self.pc),2))
                 elif self.ram_read(self.pc)[-4:] == '0101':
+                    print('01010101')
                     
                     op = 'JEQ'
                     operand_a = self.ram_read(self.pc+1)
                     self.non_alu('JEQ', operand_a)
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
+                    print('01000111')
                     
                     op = 'PRN'
                     operand_a = self.ram_read(self.pc+1)
@@ -406,8 +412,12 @@ class CPU:
                 # print(self.ram_read(self.pc))
 
                 # instruction = bin(int(self.ram_read(self.pc),2))
-                elif self.ram_read(self.pc)[-4:] == '0001':
-                    print(self.ram_read(self.pc)[-4:])    
+                # elif self.ram_read(self.pc)[-4:] == '0001':
+
+                elif int(self.ram_read(self.pc),2) == 1: # 0b00000001
+                
+                    # print(self.ram_read(self.pc)[-4:])  
+                    print('00000001')  
                     op = 'HLT'
                     operand_a = self.ram_read(self.pc+1)
                     # print('here')
@@ -416,11 +426,13 @@ class CPU:
                     self.non_alu('HLT', operand_a)
                     # print('HLT executed')
                     
+                    
 
-                    sys.exit()
-                # else:
-                #     print('Error')
-                #     print(self.ram_read(self.pc))
+
+
+                else:
+                    print('Error')
+                    print(int(self.ram_read(self.pc),2))
 
 
 
