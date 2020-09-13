@@ -168,8 +168,7 @@ class CPU:
             print('started CMP')
             reg_a = int(reg_a,2)
             reg_b = int(reg_b,2)
-            # print(reg_a)
-            # print(reg_b)
+            print('CMP started')
             a = int(self.reg[reg_a],2)
             b = int(self.reg[reg_b],2)
             print(f'a = {a}')
@@ -179,34 +178,30 @@ class CPU:
             if a < b:
                 print(f'{a} is lesser than {b}')
                 self.fl[-3] = 1
-                self.pc += 3
-                print('CMP done')
             else:
                 self.fl[-3] = 0
-                self.pc += 3
 
 
 
             if a > b:
+                print(f'{a} is larger than {b}')
                 self.fl[-2] = 1
-                self.pc += 3
-                print('CMP done')
 
             else:
                 self.fl[-2] = 0
-                self.pc += 3
 
 
 
             if a == b:
+                print(f'{a} equals {b}')
+
                 self.fl[-1] = 1
-                self.pc += 3
-                print('CMP done')
+                
             else:
                 self.fl[-1] = 0
-                self.pc += 3
 
-                
+            print('CMP done')    
+            self.pc += 3
             
 
             
@@ -234,6 +229,14 @@ class CPU:
             self.reg[reg_a] = reg_b
             self.pc += 3
             print('LDI done')
+        
+        elif op == "JEQ":
+            print('JEQ started')
+            reg_a = int(reg_a,2)
+            if self.fl[-1] == 1:
+                self.pc = reg_a
+            self.pc += 2
+            print('JEQ done')
 
         elif op == "PRN":
             print('PRN started')
@@ -248,7 +251,7 @@ class CPU:
                 
                 print(self.reg[reg_a])
             
-            self.pc += 2
+            self.pc += 1
             print('PRN done')
 
         elif op == "HLT":
@@ -256,6 +259,7 @@ class CPU:
             
             self.pc += 1
             print('HLT done')
+        
         
         else:
             raise Exception("Unsupported NON-ALU operation")
@@ -298,6 +302,7 @@ class CPU:
             # print('here')
             # print(bin(int(self.ram_read(self.pc),2) >> 4)[-1])
             # print('here')
+            
             if int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]) == 1:
                 print(int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]))
                 # print('here')
@@ -383,6 +388,12 @@ class CPU:
 
                 # print(bin(int(self.ram_read(self.pc),2)))
                 # instruction = bin(int(self.ram_read(self.pc),2))
+                elif self.ram_read(self.pc)[-4:] == '0101':
+                    
+                    op = 'JEQ'
+                    operand_a = self.ram_read(self.pc+1)
+                    self.non_alu('JEQ', operand_a)
+
                 elif self.ram_read(self.pc)[-4:] == '0111':
                     
                     op = 'PRN'
@@ -395,8 +406,8 @@ class CPU:
                 # print(self.ram_read(self.pc))
 
                 # instruction = bin(int(self.ram_read(self.pc),2))
-                elif bin(int(self.ram_read(self.pc),2)) == '0b1':
-                    # print(instruction)    
+                elif self.ram_read(self.pc)[-4:] == '0001':
+                    print(self.ram_read(self.pc)[-4:])    
                     op = 'HLT'
                     operand_a = self.ram_read(self.pc+1)
                     # print('here')
@@ -407,6 +418,9 @@ class CPU:
                     
 
                     sys.exit()
+                # else:
+                #     print('Error')
+                #     print(self.ram_read(self.pc))
 
 
 
