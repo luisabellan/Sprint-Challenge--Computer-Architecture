@@ -168,44 +168,41 @@ class CPU:
             print('started CMP')
             reg_a = int(reg_a,2)
             reg_b = int(reg_b,2)
-            print(reg_a)
-            print(reg_b)
-            a = self.reg[reg_a]
-            # b = self.reg[reg_b]
+            # print(reg_a)
+            # print(reg_b)
+            a = int(self.reg[reg_a],2)
+            b = int(self.reg[reg_b],2)
             print(f'a = {a}')
-            # print(f'b = {b}')
+            print(f'b = {b}')
 
 
             if a < b:
+                print(f'{a} is lesser than {b}')
                 self.fl[-3] = 1
-                self.pc += 3
+                self.pc += 1
+                print('CMP done')
             else:
                 self.fl[-3] = 0
-                self.pc += 3
 
 
             if a > b:
                 self.fl[-2] = 1
-                self.pc += 3
+                self.pc += 1
+                print('CMP done')
 
             else:
                 self.fl[-2] = 0
-                self.pc += 3
 
 
             if a == b:
                 self.fl[-1] = 1
-                self.pc += 3
-
+                self.pc += 1
+                print('CMP done')
             else:
                 self.fl[-1] = 0
-                self.pc += 3
-            
             
 
-
-
-            print('CMP done')
+            
         else:
             raise Exception("Unsupported ALU operation")
             
@@ -281,7 +278,7 @@ class CPU:
         # print('here')
         # print(bin(int(self.ram_read(self.pc),2)))
         # print('here')
-        while self.ram_read(self.pc) != '0b00000001':
+        while self.ram_read(self.pc) != '0b1':
             
 
             
@@ -352,7 +349,7 @@ class CPU:
                 # instruction = self.ram_read(self.pc)
                 # type(instruction)
             if int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]) == 0:
-                print(int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]))
+                # print(int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]))
                
                 # not handled by alu()
                 # print(instruction)
@@ -363,8 +360,8 @@ class CPU:
                 #print(f'not handled by alu')
                 # instruction = bin(int(self.ram_read(self.pc),2))
                 # print(bin(int(instruction,2))[-4:])
-                if bin(int(bin(int(self.ram_read(self.pc),2)),2))[-4:] == '0010':
-                    print(bin(int(bin(int(self.ram_read(self.pc),2)),2))[-4:])
+                if self.ram_read(self.pc)[-4:] == '0010':
+                    # print(bin(int(bin(int(self.ram_read(self.pc),2)),2))[-4:])
                     op = 'LDI'
                     operand_a = self.ram_read(self.pc+1)
                     operand_b = self.ram_read(self.pc+2)
@@ -376,7 +373,7 @@ class CPU:
 
                 # print(bin(int(self.ram_read(self.pc),2)))
                 # instruction = bin(int(self.ram_read(self.pc),2))
-                elif bin(int(bin(int(self.ram_read(self.pc),2)),2))[-4:] == '0111':
+                elif self.ram_read(self.pc)[-4:] == '0111':
                     
                     op = 'PRN'
                     operand_a = self.ram_read(self.pc+1)
