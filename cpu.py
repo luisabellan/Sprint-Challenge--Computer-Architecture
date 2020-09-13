@@ -239,6 +239,14 @@ class CPU:
             self.pc += 2
             print('JEQ done')
 
+        elif op == "JMP":
+            print('JMP started')
+            reg_a = int(reg_a,2)
+            
+            self.pc = reg_a
+            self.pc += 2
+            print('JMP done')
+
         elif op == "PRN":
             print('PRN started')
             reg_a = int(reg_a,2)
@@ -398,6 +406,11 @@ class CPU:
                     op = 'JEQ'
                     operand_a = self.ram_read(self.pc+1)
                     self.non_alu('JEQ', operand_a)
+                elif self.ram_read(self.pc)[-4:] == '0100':
+                    
+                    op = 'JMP'
+                    operand_a = self.ram_read(self.pc+1)
+                    self.non_alu('JMP', operand_a)
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
                     print('01000111')
