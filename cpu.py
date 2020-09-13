@@ -179,27 +179,34 @@ class CPU:
             if a < b:
                 print(f'{a} is lesser than {b}')
                 self.fl[-3] = 1
-                self.pc += 1
+                self.pc += 3
                 print('CMP done')
             else:
                 self.fl[-3] = 0
+                self.pc += 3
+
 
 
             if a > b:
                 self.fl[-2] = 1
-                self.pc += 1
+                self.pc += 3
                 print('CMP done')
 
             else:
                 self.fl[-2] = 0
+                self.pc += 3
+
 
 
             if a == b:
                 self.fl[-1] = 1
-                self.pc += 1
+                self.pc += 3
                 print('CMP done')
             else:
                 self.fl[-1] = 0
+                self.pc += 3
+
+                
             
 
             
@@ -249,6 +256,9 @@ class CPU:
             
             self.pc += 1
             print('HLT done')
+        
+        else:
+            raise Exception("Unsupported NON-ALU operation")
 
 
 
