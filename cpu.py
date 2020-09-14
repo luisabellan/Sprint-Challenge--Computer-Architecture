@@ -164,7 +164,7 @@ class CPU:
             reg_a = int(reg_a,2)
             
             self.pc = reg_a
-            self.pc += 2
+            
             print('JMP done')
         elif op == "JNE":
             print('JNE started')
@@ -174,7 +174,9 @@ class CPU:
                 print(f'reg_a = {int(self.reg[int(reg_a,2)],2)}')
                 address = int(self.reg[int(reg_a,2)],2)
                 self.pc = address
+                
                 print(f'self.pc = {self.pc}')   
+                
             
                 
 
