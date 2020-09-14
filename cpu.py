@@ -151,6 +151,34 @@ class CPU:
             print('MUL done')
             self.pc += 3
 
+        elif op == "JEQ":
+            print('JEQ started')
+            reg_a = int(reg_a,2)
+            if self.fl[-1] == 1:
+                self.pc = reg_a
+            self.pc += 2
+            print('JEQ done')
+
+        elif op == "JMP":
+            print('JMP started')
+            reg_a = int(reg_a,2)
+            
+            self.pc = reg_a
+            self.pc += 2
+            print('JMP done')
+        elif op == "JNE":
+            print('JNE started')
+            
+            
+            if self.fl[-1] == 0:
+                print(f'reg_a = {int(self.reg[int(reg_a,2)],2)}')
+                address = int(self.reg[int(reg_a,2)],2)
+                self.pc = address
+                print(f'self.pc = {self.pc}')   
+            
+                
+
+            print('JNE done')
 
         elif op == "DIV":
             print('DIV started')
@@ -231,21 +259,8 @@ class CPU:
             self.pc += 3
             print('LDI done')
         
-        elif op == "JEQ":
-            print('JEQ started')
-            reg_a = int(reg_a,2)
-            if self.fl[-1] == 1:
-                self.pc = reg_a
-            self.pc += 2
-            print('JEQ done')
+       
 
-        elif op == "JMP":
-            print('JMP started')
-            reg_a = int(reg_a,2)
-            
-            self.pc = reg_a
-            self.pc += 2
-            print('JMP done')
 
         elif op == "PRN":
             print('PRN started')
@@ -306,16 +321,13 @@ class CPU:
         while self.running:
             
 
-            
-
-
             op = ''
+         
+            # print(bin(int(self.ram_read(self.pc),2) >> 5)[-1])
             # print('here')
-            # print(bin(int(self.ram_read(self.pc),2) >> 4)[-1])
-            # print('here')
-            
+
             if int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]) == 1:
-                print(int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]))
+                # print(int(bin(int(self.ram_read(self.pc),2) >> 5)[-1]))
                 # print('here')
                 # print(self.ram_read(self.pc))
 
@@ -405,12 +417,23 @@ class CPU:
                     
                     op = 'JEQ'
                     operand_a = self.ram_read(self.pc+1)
-                    self.non_alu('JEQ', operand_a)
+                    self.alu('JEQ', operand_a)
+                
+
+                elif self.ram_read(self.pc)[-4:] == '0110':
+                    print('01010110')
+                    
+                    op = 'JNE'
+                    operand_a = self.ram_read(self.pc+1)
+                    self.alu('JNE', operand_a)
+
+
+
                 elif self.ram_read(self.pc)[-4:] == '0100':
                     
                     op = 'JMP'
                     operand_a = self.ram_read(self.pc+1)
-                    self.non_alu('JMP', operand_a)
+                    self.alu('JMP', operand_a)
 
                 elif self.ram_read(self.pc)[-4:] == '0111':
                     print('01000111')
