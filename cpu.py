@@ -99,11 +99,12 @@ class CPU:
             self.reg[reg_a] |= self.reg[reg_b]
             
         # #########################################
-        # Python bitwise not operation
-        # def bit_not(n, numbits=8):
-        # 
-        #     return (1 << numbits) - 1 - n
-        # ##########################################
+        #    -  Python bitwise not operation   -  #  
+        # #########################################
+        # def bit_not(n, numbits=8):              #
+        #                                         #  
+        #     return (1 << numbits) - 1 - n       #
+        # #########################################
 
         elif op == NOT:
            
