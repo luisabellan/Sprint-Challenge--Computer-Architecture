@@ -97,6 +97,14 @@ class CPU:
             self.reg[reg_a] &= self.reg[reg_b]
         elif op == OR:
             self.reg[reg_a] |= self.reg[reg_b]
+            
+        # #########################################
+        # Python bitwise not operation
+        # def bit_not(n, numbits=8):
+        # 
+        #     return (1 << numbits) - 1 - n
+        # ##########################################
+
         elif op == NOT:
            
             self.reg[reg_a] = (1 << 8) - 1 - self.reg[reg_a] 
